@@ -16,11 +16,11 @@ const cheatTheElfs = (cheatSheet) => {
 };
 
 // X == lose, Y == draw, Z == win
-const getMyMove = (elfMove, rountOutcome) => {
+const getMyMove = (elfMove, roundOutcome) => {
 	const elfMoveCode = elfMove.charCodeAt(0);
 	let returnCode = elfMoveCode;
-	if (rountOutcome === 'X') returnCode = elfMoveCode + (['B', 'C'].includes(elfMove) ? -1 : 2);
-	else if (rountOutcome === 'Z') returnCode = elfMoveCode + (['A', 'B'].includes(elfMove) ? 1 : -2);
+	if (roundOutcome === 'X') returnCode = elfMoveCode + (['B', 'C'].includes(elfMove) ? -1 : 2);
+	else if (roundOutcome === 'Z') returnCode = elfMoveCode + (['A', 'B'].includes(elfMove) ? 1 : -2);
 
 	return String.fromCharCode(returnCode + 23);
 };
