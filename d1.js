@@ -1,12 +1,13 @@
 const fs = require('fs');
-fs.readFile(__dirname+'/input.txt', 'utf-8', (err, data) => {
+fs.readFile(__dirname+'/day1/input.txt', 'utf-8', (err, data) => {
 	findCalories(data);
 });
 
 const findCalories = (elfCalorieList) => {
-	const elfTotals = elfCalorieList.split('\r\n\r\n').reduce((calorieTotals, elf) => {
+	const lineBreak = elfCalorieList.includes('\r') ? '\r\n' : '\n';
+	const elfTotals = elfCalorieList.split(lineBreak+lineBreak).reduce((calorieTotals, elf) => {
 		calorieTotals.push(
-			elf.split('\r\n').reduce((total, calories) => {
+			elf.split(lineBreak).reduce((total, calories) => {
 				total += +calories;
 				return total;
 			}, 0)
