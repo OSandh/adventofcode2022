@@ -1,18 +1,19 @@
 const fs = require('fs');
 fs.readFile(__dirname + '/input.txt', 'utf-8', (err, data) => {
 	cheatTheElfs(data);
+	cheatTheElfs(data, true);
 });
 
-const cheatTheElfs = (cheatSheet) => {
+const cheatTheElfs = (cheatSheet, part2 = false) => {
 	let myTotalScore = 0;
 	for (const round of cheatSheet.split('\n')) {
 		moves = round.split(' ');
 		const elfMove = moves[0];
-		const myMove = getMyMove(elfMove, moves[1].replace('\r', ''));
+		const myMove = part2 ? getMyMove(elfMove, moves[1].replace('\r', '')) : moves[1].replace('\r', '');
 		// 0 if you lost, 3 if the round was a draw, and 6 if you won
 		myTotalScore += playRound(elfMove, myMove) * 3 + { X: 1, Y: 2, Z: 3 }[myMove];
 	}
-	console.log('My total score:', myTotalScore, 'forsenCD');
+	console.log('My total score:', myTotalScore,part2 ? '(part2)' : '' , 'forsenCD');
 };
 
 // X == lose, Y == draw, Z == win
