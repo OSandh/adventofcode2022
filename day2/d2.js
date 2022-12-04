@@ -10,8 +10,7 @@ const cheatTheElfs = (cheatSheet) => {
 		const elfMove = moves[0];
 		const myMove = getMyMove(elfMove, moves[1].replace('\r', ''));
 		// 0 if you lost, 3 if the round was a draw, and 6 if you won
-		const roundScore = playRound(elfMove, myMove);
-		myTotalScore += roundScore * 3 + getMoveScore(myMove);
+		myTotalScore += playRound(elfMove, myMove) * 3 + getMoveScore(myMove);
 	}
 	console.log('My total score:', myTotalScore, 'forsenCD');
 };
