@@ -1,27 +1,10 @@
 const fs = require('fs');
-
-const generatePrioDict = (start, end, offset = 0) => {
-	let dict = {};
-	let prio = 1;
-	for (let i = start.charCodeAt(0); i <= end.charCodeAt(0); i++) {
-		dict[String.fromCharCode(i)] = offset + prio++;
-	}
-	return dict;
-};
-const prioDict = { ...generatePrioDict('a', 'z'), ...generatePrioDict('A', 'Z', 26) };
-
-fs.readFile(__dirname + '/day3/input.txt', 'utf-8', (err, data) => {
-	// fix for windows scrubs
-	const lb = data.includes('\r') ? '\r\n' : '\n';
-	partOne(data.split(lb));
-	partTwo(data.split(lb));
-});
+const charPrio = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 const partOne = (rucksacks) => {
 	let prioSum = 0;
 	for (const rucksack of rucksacks) {
-		const mid = rucksack.length / 2;
-		const compartments = [rucksack.substring(0, mid), rucksack.substring(mid)];
+		const compartments = [rucksack.substring(0, rucksack.length / 2), rucksack.substring(rucksack.length / 2)];
 		prioSum += getRucksackPrioSum(compartments);
 	}
 	console.log('Sum of type priorites (part1):', prioSum);
@@ -40,8 +23,7 @@ const partTwo = (rucksacks) => {
 	}
 	console.log('Sum of type priorites (part2):', prioSum);
 };
-
-// get prio sum for n compartments/rucksacks
+// dynamic get prio sum for n compartments/rucksacks
 const getRucksackPrioSum = (cmps) => {
 	let prioSum = 0;
 	const typeInBoth = cmps[0].split('').find((char) => {
@@ -50,6 +32,9 @@ const getRucksackPrioSum = (cmps) => {
 		while (i < cmps.length - 1) valid.push(cmps[++i].includes(char));
 		return !valid.includes(false);
 	});
-	if (typeInBoth) prioSum += prioDict[typeInBoth];
+	if (typeInBoth) prioSum += charPrio.indexOf(typeInBoth) + 1;
 	return prioSum;
 };
+const data = fs.readFileSync(__dirname + '/day3/input.txt', 'utf-8').split`\n`;
+partOne(data);
+partTwo(data);
