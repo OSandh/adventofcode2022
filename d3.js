@@ -35,6 +35,6 @@ const getRucksackPrioSum = (cmps) => {
 	if (typeInBoth) prioSum += charPrio.indexOf(typeInBoth) + 1;
 	return prioSum;
 };
-const data = fs.readFileSync(__dirname + '/day3/3-input.txt', 'utf-8').split`\n`;
+const data = fs.readFileSync(__dirname + '/inputs/i3.txt', 'utf-8').split`\n`;
 partOne(data);
 partTwo(data);

@@ -1,5 +1,5 @@
 const fs = require('fs');
-const data = fs.readFileSync(__dirname + '/day4/4-input.txt', 'utf-8').split`\n`.map((pair) =>
+const data = fs.readFileSync(__dirname + '/inputs/i4.txt', 'utf-8').split`\n`.map((pair) =>
 	pair.split`,`.reduce((raw, assignment) => {
 		raw.push(assignment.split`-`.map((n) => +n));
 		return raw;

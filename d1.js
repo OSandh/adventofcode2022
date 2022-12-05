@@ -1,5 +1,5 @@
 const fs = require('fs');
-fs.readFile(__dirname+'/day1/1-input.txt', 'utf-8', (err, data) => {
+fs.readFile(__dirname+'/inputs/i1.txt', 'utf-8', (err, data) => {
 	findCalories(data);
 });
 
