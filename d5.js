@@ -1,41 +1,31 @@
+try {
+	if (process.argv[2] === 'show') {
+		var { printMatrix } = require('./rnd');
+		var showMe = true;
+	}
+} catch {}
 const data = require('fs').readFileSync('inputs/i5.txt', 'utf-8').split`\n`.map((row) => row.replace(/[\[\]']+/g, ' '));
 
-const keyRowIndex = data.findIndex((row) => {
-	if (row.includes(' 1   2')) return row;
-});
-let stacksCount = data[keyRowIndex].replaceAll(' ', '').split``.length;
-const print = (matrix) => {
-	for (const row of matrix) console.log(row.map((c) => c + ' ').join``);
-	console.log('');
-	let n = 1;
-	let numRow = '';
-	while (n <= stacksCount) numRow += n++ + ' ';
-	console.log(numRow, '\n');
-};
-const getStackMatrix = (rows) => {
-	return rows.reduce((matrix, row) => {
-		let temp = [];
-		row.substring(1, row.length - 1).split``.map((c, index) => {
-			if (index % 4 === 0) temp.push(c);
-		});
-		matrix.push(temp);
-		return matrix;
-	}, []);
-};
-const matrix = getStackMatrix(data.splice(0, keyRowIndex));
+const keyRowIndex = data.findIndex((row) => row.includes(' 1   2'));
+const matrix = data.splice(0, keyRowIndex).reduce((matrix, row) => {
+	let temp = [];
+	row.substring(1, row.length - 1).split``.map((c, index) => {
+		if (index % 4 === 0) temp.push(c);
+	});
+	matrix.push(temp);
+	return matrix;
+}, []);
+let stacksCount = matrix[0].length;
 
 const fixStacks = (moves, matrix) => {
-	console.log(moves, '\n');
-	print(matrix);
 	for (const move of moves) {
-		const action = move.split` `.reduce((inputs, inp) => {
-			if (!isNaN(inp)) inputs.push(inp);
-			return inputs;
-		}, []);
-		console.log(move, '\n');
-		const amount = action[0];
-		const from = action[1] - 1;
-		const to = action[2] - 1;
+		const [amount, from, to] = move.split` `
+			.reduce((inputs, inp) => {
+				if (!isNaN(inp)) inputs.push(inp);
+				return inputs;
+			}, [])
+			.map((a, index) => (index > 0 ? a - 1 : a));
+
 		let i = 0;
 		while (i++ < amount) {
 			let crate = '';
@@ -60,15 +50,12 @@ const fixStacks = (moves, matrix) => {
 			}
 			matrix[placeAt][to] = crate;
 		}
-		print(matrix);
+		if (showMe) printMatrix(matrix, stacksCount);
 	}
 	return matrix;
 };
-const stacksFixed = fixStacks(data.splice(2, data.length), matrix);
-console.log('FINAL\n', stacksFixed);
-print(stacksFixed);
 
-const printTopCrates = (matrix) => {
+const getTopCrates = (matrix) => {
 	let output = '';
 	let i = 0;
 	while (i < stacksCount) {
@@ -79,6 +66,12 @@ const printTopCrates = (matrix) => {
 			}
 		}
 	}
-	console.log('top crates:', output);
+	return output;
 };
-printTopCrates(stacksFixed);
+
+const partOne = (matrix) => {
+	const stacksFixed = fixStacks(data.splice(2, data.length), matrix);
+	console.log('top crates:', getTopCrates(stacksFixed));
+};
+
+partOne(matrix);
