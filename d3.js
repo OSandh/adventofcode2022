@@ -1,5 +1,5 @@
 const fs = require('fs');
-fs.readFile(__dirname + '/day3/input.txt', 'utf-8', (err, data) => {
+fs.readFile(__dirname + '/day3/3-input.txt', 'utf-8', (err, data) => {
 	// fix for windows scrubs
 	const lb = data.includes('\r') ? '\r\n' : '\n';
 	partOne(data.split(lb));

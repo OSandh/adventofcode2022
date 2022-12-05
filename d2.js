@@ -1,5 +1,5 @@
 const fs = require('fs');
-fs.readFile(__dirname + '/day2/input.txt', 'utf-8', (err, data) => {
+fs.readFile(__dirname + '/day2/2-input.txt', 'utf-8', (err, data) => {
 	cheatTheElfs(data);
 	cheatTheElfs(data, true);
 });
