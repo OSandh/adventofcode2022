@@ -8,7 +8,7 @@ const findMarker = (markerLength = 4) => {
 			let grp = msg.slice(i, i + markerLength);
 			for (let c of grp) {
 				let other = grp.filter((o) => o === c);
-				if (other.length > 1 && grp.length === markerLength) {
+				if (other.length > 1) {
 					found = false;
 					break;
 				}
