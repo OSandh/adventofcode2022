@@ -48,5 +48,6 @@ const getTopCrates = (stacks) => {
 
 const part1Stacks = fixStacks(JSON.parse(JSON.stringify(stacks)));
 console.log('top crates (part1):', getTopCrates(part1Stacks));
+
 const part2Stacks = fixStacks(stacks, true);
 console.log('top crates (part2):', getTopCrates(part2Stacks));
