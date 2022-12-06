@@ -2,13 +2,11 @@ const data = require('fs').readFileSync('./inputs/i6.txt', 'utf-8').split`\n`.ma
 
 const findMarker = (markerLength = 4) => {
 	for (const msg of data) {
-		let i = -1;
-		while (++i < msg.length) {
+		for (let i = 0; i < msg.length; i++) {
 			let found = true;
 			let grp = msg.slice(i, i + markerLength);
 			for (let c of grp) {
-				let other = grp.filter((o) => o === c);
-				if (other.length > 1) {
+				if (grp.filter((o) => o === c).length > 1) {
 					found = false;
 					break;
 				}
