@@ -12,7 +12,6 @@ const matrix = data.splice(0, keyRowIndex).reduce((matrix, row) => {
 		.substring(1, row.length - 1)
 		.replaceAll('    ', '   !')
 		.replaceAll('   ', '').split``.map((c, index) => {
-		//if (c !== ' ') console.log(c, index + 1);
 		if (!matrix[index + 1]) matrix[index + 1] = [];
 		if (c !== '!') matrix[index + 1].unshift(c);
 	});
