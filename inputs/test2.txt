@@ -15,3 +15,14 @@ move 3 from 1 to 9
 move 1 from 2 to 4
 move 3 from 7 to 5
 move 3 from 9 to 2
+move 3 from 3 to 5
+move 1 from 5 to 1
+move 5 from 1 to 8
+move 2 from 1 to 8
+move 3 from 7 to 3
+move 1 from 8 to 9
+move 6 from 9 to 8
+move 3 from 8 to 7
+move 7 from 8 to 9
+move 2 from 5 to 9
+move 2 from 2 to 9

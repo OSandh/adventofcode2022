@@ -1,8 +1,11 @@
 const { execSync } = require('child_process');
 
-exports.printMatrix = (matrix, stacksCount) => {
-	execSync('sleep 0.005');
-	console.clear();
+exports.printMatrix = (matrix, stacksCount, clear = true) => {
+	
+	if (clear) {
+		execSync('sleep 0.005');
+		console.clear();
+	} 
 	for (const row of matrix) {
 		if (row.find((c) => c !== ' ')) {
 			let crates = row.map((c) => c + ' ').join``;
