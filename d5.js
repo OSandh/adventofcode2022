@@ -4,19 +4,20 @@ try {
 		var showMe = true;
 	}
 } catch {}
-const data = require('fs').readFileSync('inputs/i5.txt', 'utf-8').split`\n`.map((row) =>
-	row.replace(/[\[\]']+/g, ' ')
-);
+const data = require('fs').readFileSync('inputs/i5.txt', 'utf-8').split`\n`.map((row) => row.replace(/[\[\]']+/g, ' '));
 
 const keyRowIndex = data.findIndex((row) => row.includes(' 1   2'));
 const matrix = data.splice(0, keyRowIndex).reduce((matrix, row) => {
-	row.substring(1, row.length - 1).replaceAll('   ', '').split``.map((c, index) => {
+	row
+		.substring(1, row.length - 1)
+		.replaceAll('    ', '   !')
+		.replaceAll('   ', '').split``.map((c, index) => {
+		//if (c !== ' ') console.log(c, index + 1);
 		if (!matrix[index + 1]) matrix[index + 1] = [];
-		if (c !== ' ') matrix[index + 1].unshift(c);
+		if (c !== '!') matrix[index + 1].unshift(c);
 	});
 	return matrix;
 }, {});
-//console.log(matrix);
 let stacksCount = matrix[1].length;
 
 const fixStacksPartOne = (moves, ogMatrix) => {
@@ -29,36 +30,10 @@ const fixStacksPartOne = (moves, ogMatrix) => {
 
 		let i = 0;
 		while (i++ < amount) {
-			console.log('\n',matrix, '\n', amount, 'from', from, 'to', to);
-			if (matrix[from][matrix[from].length-1] !== undefined) {
-				const crate = matrix[from].splice(matrix[from].length-1, 1)[0];
-				console.log('\n',matrix, '\n', amount, 'from', from, 'to', to);
-				matrix[to].push(crate);
-				console.log('\n',crate, 'added', matrix[to], 'from', matrix[from], '\n');
-			}
-			// let crate = '';
-			// for (const row of matrix) {
-			// 	if (row[from] !== ' ') {
-			// 		crate = row[from];
-			// 		row[from] = ' ';
-			// 		break;
-			// 	}
-			// }
-			// let placeAt = null;
-			// for (const [index, row] of Object.entries(matrix)) {
-			// 	if (row[to] === ' ') placeAt = index;
-			// }
-			// if (placeAt === null) {
-			// 	let newRow = [];
-			// 	let count = 0;
-			// 	while (count++ < stacksCount) newRow.push(' ');
-
-			// 	matrix.unshift(newRow);
-			// 	placeAt = 0;
-			// }
-			// matrix[placeAt][to] = crate;
+			let index = matrix[from].length - 1;
+			matrix[to].push(matrix[from][index]);
+			matrix[from] = matrix[from].slice(0, index);
 		}
-		//console.log(matrix);
 		if (showMe) printMatrix(matrix, stacksCount);
 	}
 	return matrix;
@@ -137,7 +112,6 @@ const getTopCrates = (matrix) => {
 	let output = '';
 	let i = 0;
 	for (const stack of Object.values(matrix)) {
-		console.log(stack);
 		output += stack[stack.length - 1];
 	}
 	return output;
@@ -145,7 +119,6 @@ const getTopCrates = (matrix) => {
 
 const partOne = (matrix) => {
 	const stacksFixed = fixStacksPartOne(data.splice(2, data.length), matrix);
-	console.log(stacksFixed);
 	console.log('top crates (part1):', getTopCrates(stacksFixed));
 };
 
