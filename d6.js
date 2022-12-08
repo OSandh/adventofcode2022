@@ -4,7 +4,7 @@ const findMarker = (markerLength = 4) => {
 	for (const msg of data) {
 		for (let i = 0; i < msg.length; i++) {
 			let grp = msg.slice(i, i + markerLength);
-			if (grp.length === new Set(grp).size) return i + markerLength;
+			if (markerLength === new Set(grp).size) return i + markerLength;
 		}
 	}
 };
