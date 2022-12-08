@@ -23,10 +23,9 @@ const nswe = (tree, row, col, y = true, pos = true, scenic = false) => {
 };
 
 let visible = grid.length * 4 - 4;
-const countVisible = (t, ri, ci) => {
-	if (nswe(t, ri, ci, true, false) || nswe(t, ri, ci) || nswe(t, ri, ci, false, false) || nswe(t, ri, ci, false))
-		visible++;
-};
+const countVisible = (t, ri, ci) =>
+	nswe(t, ri, ci, true, false) || nswe(t, ri, ci) || nswe(t, ri, ci, false, false) || nswe(t, ri, ci, false);
+
 const getScenicScore = (t, ri, ci) => {
 	return (
 		nswe(t, ri, ci, true, false, true) *
@@ -35,12 +34,13 @@ const getScenicScore = (t, ri, ci) => {
 		nswe(t, ri, ci, false, true, true)
 	);
 };
+
 let scenicScores = [];
 for (const [ri, row] of Object.entries(grid)) {
 	if (ri > 0 && ri < row.length - 1) {
 		for (const [ci, tree] of Object.entries(row)) {
 			if (ci > 0 && ci < row.length - 1) {
-				countVisible(tree, +ri, +ci);
+				visible += countVisible(tree, +ri, +ci);
 				scenicScores.push({ tree: `${ri},${ci}`, score: getScenicScore(tree, +ri, +ci) });
 			}
 		}
