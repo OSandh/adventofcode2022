@@ -1,60 +1,39 @@
-const grid = require('fs').readFileSync('inputs/i8.txt', 'utf-8').split`\n`.reduce((treegrid, row) => {
-	treegrid.push(
-		row.split``.reduce((gridrow, c) => {
-			gridrow.push(+c);
-			return gridrow;
+const grid = require('fs').readFileSync('inputs/i8.txt', 'utf-8').split`\n`.reduce((tg, row) => {
+	tg.push(
+		row.split``.reduce((gr, c) => {
+			gr.push(+c);
+			return gr;
 		}, [])
 	);
-	return treegrid;
+	return tg;
 }, []);
 
-const north = (tree, ri, ci, scenic = false) => {
+const nswe = (tree, row, col, y = true, pos = true, scenic = false) => {
 	let score = 0;
-	let i = ri - 1;
-	while (i >= 0) {
-		let friend = grid[i--][ci];
+	let incr = pos ? 1 : -1;
+	let ci = col + (y ? 0 : incr);
+	let ri = row + (y ? incr : 0);
+	while (eval((y ? ri : ci) + (pos ? '<' : '>=') + (pos ? grid.length : 0))) {
 		score++;
-		if (tree <= friend) return scenic ? score : false;
-	}
-	return scenic ? score : true;
-};
-const south = (tree, ri, ci, scenic = false) => {
-	let score = 0;
-	let i = ri + 1;
-	while (i < grid.length) {
-		let friend = grid[i++][ci];
-		score++;
-		if (tree <= friend) return scenic ? score : false;
-	}
-	return scenic ? score : true;
-};
-const west = (tree, ri, ci, scenic = false) => {
-	let score = 0;
-	let i = ci - 1;
-	while (i >= 0) {
-		let friend = grid[ri][i--];
-		score++;
-		if (tree <= friend) return scenic ? score : false;
-	}
-	return scenic ? score : true;
-};
-const east = (tree, ri, ci, scenic = false) => {
-	let score = 0;
-	let i = ci + 1;
-	while (i < grid.length) {
-		let friend = grid[ri][i++];
-		score++;
-		if (tree <= friend) return scenic ? score : false;
+		if (tree <= grid[ri][ci]) return scenic ? score : false;
+		ci += y ? 0 : incr;
+		ri += y ? incr : 0;
 	}
 	return scenic ? score : true;
 };
 
 let visible = grid.length * 4 - 4;
-const countVisible = (tree, ri, ci) => {
-	if (north(tree, ri, ci) || south(tree, ri, ci) || west(tree, ri, ci) || east(tree, ri, ci)) visible++;
+const countVisible = (t, ri, ci) => {
+	if (nswe(t, ri, ci, true, false) || nswe(t, ri, ci) || nswe(t, ri, ci, false, false) || nswe(t, ri, ci, false))
+		visible++;
 };
-const getScenicScore = (tree, ri, ci) => {
-	return north(tree, ri, ci, true) * south(tree, ri, ci, true) * west(tree, ri, ci, true) * east(tree, ri, ci, true);
+const getScenicScore = (t, ri, ci) => {
+	return (
+		nswe(t, ri, ci, true, false, true) *
+		nswe(t, ri, ci, true, true, true) *
+		nswe(t, ri, ci, false, false, true) *
+		nswe(t, ri, ci, false, true, true)
+	);
 };
 let scenicScores = [];
 for (const [ri, row] of Object.entries(grid)) {
